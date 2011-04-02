@@ -1,0 +1,38 @@
+ahk-stuff
+a set of useful keyboard shortcuts that come in handy
+
+This is a script for autohotkey (http://www.autohotkey.com/)
+I used to keep this script to start at startup, suggestions and improvements are welcome.
+
+Everything is tested on both Windows 7 and Windows XP.
+
+Here's the keyboard shortcuts added 
+
+Volume control:
+	Win+Z				toggle volume mute
+	Win+mouse wheel		raise/lower volume
+	
+Various:
+	Windows+M			Lock the screen and turnoff the monitor
+						(the "nircmd" command is required in the path)
+						http://www.nirsoft.net/utils/nircmd.html
+	Windows+O			ejects/close the primary cdrom
+
+	Windows+C			If pressed in a Windows Explorer windows
+						open a command line prompt on the current folder
+						otherwise open a command line prompt
+
+Italian accented chars (with shift to uppercase):
+	AltGr+A				à or À
+	AltGr+O				ò or Ò
+	AltGr+I				ì or Ì
+	AltGr+U				ù or Ù
+	AltGr+W				è or È
+
+Italian hotstrings:
+	cmq					comunque
+
+Other useful chars:
+	AltGr+0				~
+	AltGr+T				™
+	AltGr+C				©
