@@ -1,5 +1,8 @@
-; Some useful AutoHotKey tools
+ï»¿; Some useful AutoHotKey tools
 ; Dario "dariosky" Varotto
+
+#SingleInstance Force
+SendMode Input
 
 ; Windows+Z to toggle mute sounds
 #z::
@@ -14,7 +17,7 @@ return
 #m::
 	Send {Blind}#l
 	Sleep 1000
-	RunWait nircmd.exe monitor off
+	Run nircmd.exe monitor off
 return
 
 ; Windows+O ejects/close the primary cdrom
@@ -29,17 +32,16 @@ OpenCmdInCurrent()
 {
 	#IfWinActive ahk_class ExploreWClass|CabinetWClass
 		WinGetText , full_path, A  ; This is required to get the full path of the file from the address bar
-		;msgbox, Da Gettext: %full_path%
+		;MsgBox %full_path%
 		; Split on newline (`n)
-		StringSplit, word_array, full_path, `n
-		full_path = %word_array1%   ; Take the first element from the array
-
-		; Just in case - remove all carriage returns (`r)
-		StringReplace, full_path, full_path, `r, , all
-		full_path := RegExReplace(full_path, "^.*: ", "")
-		IfInString full_path, \
+		Loop, Parse, full_path, `n
 		{
-			return %full_path%
+			If SubStr(a_LoopField, 1, 8) = "address:"
+			{
+				address:= ( SubStr(a_LoopField, 9) )
+				return %address%
+			}
+
 		}
 	#IfWinActive
     Return "C:\"
@@ -47,8 +49,11 @@ OpenCmdInCurrent()
 
 ; Windows+C open a command prompt in the current path
 #c::
-	test := OpenCmdInCurrent()
-	Run %ComSpec% /K cd /d %test%
+	full_path := OpenCmdInCurrent()
+	If ( InStr( full_path , ":" ) )
+        Run %ComSpec% /K cd /D "%full_path%"
+    Else
+        Run %ComSpec% /K cd /D "C:\"
 return
 
 ; Backspace, in Windows 7 act like "to Upper level"
@@ -69,25 +74,32 @@ return
 ;  ALT gr+vowel (for the E key, which is euro sign, we use ALTgr+W)
 ;  upper and lower case
 
-^+>!a::Send À
-^+>!w::Send È
-^+>!i::Send Ì
-^+>!o::Send Ò
-^+>!u::Send Ù
+^+>!a::Send Ã€
+^+>!w::Send Ãˆ
+^+>!i::Send ÃŒ
+^+>!o::Send Ã’
+^+>!u::Send Ã™
 
-^>!a::Send à
-^>!w::Send è
-^>!i::Send ì
-^>!o::Send ò
-^>!u::Send ù
-^>!n::Send ñ
+^>!a::Send Ã 
+^>!w::Send Ã¨
+^>!i::Send Ã¬
+^>!o::Send Ã²
+^>!u::Send Ã¹
+^>!n::Send Ã±
 
 ; AltGr+0 as tilde
 ^>!0::Send ~
+; AltGr+' as `
+^>!'::Send ``
 
 ; Some sometime useful symbol ALT gr+T
-^>!t::Send ™
-^>!c::Send ©
+^>!t::Send â„¢
+^>!c::Send Â©
 
 ; some italian "hotstrings"
 ::cmq::comunque
+
+; Win+F1,F2,F3 to change mouse sensitivity. via 
+#F1::DllCall("SystemParametersInfo", Int,113, Int,0, UInt,6, Int,2) ;low sensitivity
+#F2::DllCall("SystemParametersInfo", Int,113, Int,0, UInt,14, Int,2) ;normal sensisivity
+#F3::DllCall("SystemParametersInfo", Int,113, Int,0, UInt,20, Int,2) ;high sensitivity
